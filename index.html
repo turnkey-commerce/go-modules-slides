@@ -34,12 +34,81 @@
 			<li>GOPATH
 				<ul>
                     <li>Available in Go 1.0</li>
-                    <li>No Way to Pin Versions</li>
-                    <li>Vendoring Added in Go 1.5</li>
+                    <li>No method to pin versions</li>
+					<li>Vendoring added in Go 1.5</li>
+					<li>Multiple open source packages for version management</li>
+				</ul>
+			</li>
+			<li>dep
+				<ul>
+					<li>"Official Experiment"</li>
+					<li>Abandoned in favor of Go Modules official proposal</li>
+				</ul>
+			</li>
+			<li>Go Modules
+				<ul>
+					<li>Official Go proposal</li>
+					<li>Allows for multiple versions of a package</li>
+					<li>Preliminary support as of Go 1.11</li>
+					<li>Default approach with Go 1.13</li>
 				</ul>
 			</li>
 		</ul>
 	</section>
+
+	<section class="slide">
+		<h2>Advantage of Go Modules</h2>
+		<ul>
+			<li>
+				Built into go command
+			</li>
+			<li>
+				Simple and automatic
+			</li>
+			<li>
+				Allows for reproducible builds
+			</li>
+			<li>
+				Allows multiple versions of same package
+				<ul>
+					<li>"Transitive" dependencies (dependency of dependency)</li>
+					<li>Allows for gradual migration strategies</li>
+				</ul>
+			</li>
+			<li>
+				Vendoring not required
+			</li>
+			<li>
+				Your Go code can be on any path
+			</li>
+			<li>
+				Performant
+			</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+			<h2>How to Use</h2>
+			<ul>
+				<li>
+					Go version >= 1.11
+				</li>
+				<li>
+					Prequisites - two options
+					<ul>
+						<li>
+							Put code outside of GOPATH/src
+						</li>
+						<li>
+							Set environment variable GO111MODULE=on
+						</li>
+					</ul>
+				</li>
+				<li>
+					For Go 1.13 modules will be the default
+				</li>
+			</ul>
+		</section>
 	
 	<section class="slide">
 		<h2 class="shout">Q and A</h2>
