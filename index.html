@@ -26,7 +26,34 @@
 			</h3>			
 		</header>
 		<img style="margin-left: 300px;" class="cover" src="pictures/gopher.png" alt="GoTime Gopher">
-    </section>
+	</section>
+	
+	<section class="slide">
+		<h2>Why is Proper Package Handling Important?</h2>
+		<ul>
+			<li>Ensure Reproducible Builds
+				<ul>
+					<li>
+						Other developers pull same package versions
+					</li>
+					<li>
+						CI/CD system pulls same package versions
+					</li>
+				</ul>
+			</li>
+			<li class="next">Avoid Security Issues
+				<ul>
+					<li>e.g. event-stream NPM issues</li>
+				</ul>
+			</li>
+			<li class="next">Avoid Surprising Regressions
+				<ul>
+					<li>e.g. pulling wrong package version with breaking change</li>
+				</ul>
+			</li>
+
+		</ul>
+	</section>
     
 	<section class="slide">
 		<h2>History of Packages in Go</h2>
@@ -85,6 +112,26 @@
 	</section>
 
 	<section class="slide">
+		<h2>Semver</h2>
+		<ul>
+			<li class="next">
+				Version specified as "v<b>major</b>.<b>minor</b>.<b>patch</b>", e.g. "v1.0.1"
+				<ul>
+					<li class="next">
+						<b>major</b>: breaking change in api
+					</li>
+					<li class="next">
+						<b>minor</b>: new functionality that is backwards compatible
+					</li>
+					<li class="next">
+						<b>patch</b>: bug fix to existing functionality that is backwards compatible
+					</li>
+				</ul>		
+			</li>
+		<ul>
+	</section>
+
+	<section class="slide">
 		<h2>How to Use</h2>
 		<ul>
 			<li class="next">
@@ -128,6 +175,30 @@
 			<code>github.com/turnkey-commerce/go-speak v1.0.0/go.mod h1:/KX08NO2Opu5v055Cu0smeiiBox=</code>
 			<code>github.com/turnkey-commerce/go-speak v1.1.0 h1:DIUocFsueZdRRu9OfHyh1+N5CXnLlXH=</code>		
 		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Workflows Summary</h2>
+		<ul>
+			<li class="next">
+				<b>go mod init</b> creates a new module, initializing the go.mod file that describes it.
+			</li>
+			<li class="next">
+				<b>go build</b>, <b>go test</b>, and other package-building commands add new dependencies to go.mod as needed.
+			</li>
+			<li class="next">
+				<b>go list -m</b> all prints the current module’s dependencies.
+			</li>
+			<li class="next">
+				<b>go get</b> changes the required version of a dependency (or adds a new dependency).
+			</li>
+			<li class="next">
+				<b>go mod tidy</b> removes unused dependencies.
+			</li>
+			<li class="next">
+				<b>go mod vendor</b> creates a vendor folder with dependencies (optional).
+			</li>
+		</ul>
 	</section>
 	
 	<section class="slide">
