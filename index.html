@@ -31,7 +31,7 @@
 	<section class="slide">
 		<h2>Why is Proper Package Handling Important?</h2>
 		<ul>
-			<li>Ensure Reproducible Builds
+			<li class="next">Ensure Reproducible Builds
 				<ul>
 					<li>
 						Other developers pull same package versions
@@ -43,7 +43,7 @@
 			</li>
 			<li class="next">Avoid Security Issues
 				<ul>
-					<li>e.g. event-stream NPM issues</li>
+					<li>e.g. event-stream NPM issue</li>
 				</ul>
 			</li>
 			<li class="next">Avoid Surprising Regressions
@@ -58,10 +58,11 @@
 	<section class="slide">
 		<h2>History of Packages in Go</h2>
 		<ul>
-			<li>GOPATH
+			<li class="next">GOPATH
 				<ul>
                     <li>Very limited versioning</li>
 					<li>Vendoring added in Go 1.5</li>
+					<li>Various third-party versioning solutions</li>
 				</ul>
 			</li>
 			<li class="next">dep
@@ -128,6 +129,22 @@
 					</li>
 				</ul>		
 			</li>
+			<li class="next">
+				Tag your releases in git using semver
+			</li>
+			<li class="next">
+				Modules treats any v0.n.n release loosely
+			</li>
+			<li class="next">
+				Modules forces special treatment of major change 1-> 2 -> 3, etc
+				<ul>
+					<li class="next">New version will require the version appended to the import</li>
+					<pre>
+						<code class="next">import "rsc.io/quote/v3"</code>
+					</pre>
+				</ul>
+			</li>
+
 		<ul>
 	</section>
 
