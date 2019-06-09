@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Go Modules Presentation</title>
     <meta charset="utf-8">
@@ -12,48 +13,274 @@
     </style>
     <link rel="stylesheet" href="site.css?v=1">
 </head>
+
 <body class="shower full">
     <header class="caption">
-		<h1>Go Code for SQL DAL Generation</h1>
-		<p>James Culbertson, Houston Golang Meetup, October 18, 2018</p>
-	</header>
+        <h1>Using Go Modules</h1>
+        <p>James Culbertson, Houston Golang Meetup, June 20, 2019</p>
+    </header>
     <section class="slide black" id="cover">
-		<header>
-			<div class="title">Using Go Modules<br/>With an Intro to Athens</div>
-			<p class="author">James Culbertson</p>
-			<h3>
-				Houston Golang Meetup<br>June 20, 2019 
-			</h3>			
-		</header>
-		<img style="margin-left: 300px;" class="cover" src="pictures/gopher.png" alt="GoTime Gopher">
+        <header>
+            <div class="title">Using Go Modules<br/>With an Intro to Athens</div>
+            <p class="author">James Culbertson</p>
+            <h3>
+                Houston Golang Meetup<br>June 20, 2019
+            </h3>
+        </header>
+        <img style="margin-left: 300px;" class="cover" src="pictures/gopher.png" alt="GoTime Gopher">
     </section>
-    
-	<section class="slide">
-		<h2>History of Packages in Go</h2>
-		<ul>
-			<li>GOPATH
-				<ul>
-                    <li>Available in Go 1.0</li>
-                    <li>No Way to Pin Versions</li>
-                    <li>Vendoring Added in Go 1.5</li>
-				</ul>
-			</li>
-		</ul>
-	</section>
-	
-	<section class="slide">
-		<h2 class="shout">Q and A</h2>
-	</section>
-	<section class="slide">
-		<h3>Slides: <a href="https://goo.gl/fa8d8d">https://goo.gl/fa8d8d</a></h3>
+
+    <section class="slide">
+        <h2>Why is Proper Package Handling Important?</h2>
+        <ul>
+            <li class="next">Ensure Reproducible Builds
+                <ul>
+                    <li>
+                        Other developers will pull same package versions
+                    </li>
+                    <li>
+                        CI/CD system will pull same package versions
+                    </li>
+                </ul>
+            </li>
+            <li class="next">Avoid Package Injection Security Issues
+                <ul>
+                    <li>Event-stream NPM issue</li>
+                </ul>
+            </li>
+            <li class="next">Avoid Surprising Regressions
+                <ul>
+                    <li>Pulling package version with breaking change</li>
+                    <li>Developer deletes package from Github</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>History of Packages in Go</h2>
+        <ul>
+            <li class="next">GOPATH
+                <ul>
+                    <li>Very limited versioning</li>
+                    <li>Vendoring added in Go 1.5</li>
+                    <li>Various third-party versioning solutions</li>
+                </ul>
+            </li>
+            <li class="next">dep
+                <ul>
+                    <li>"Official Experiment" - based on Rust Cargo approach</li>
+                    <li>Abandoned in favor of Go Modules official proposal</li>
+                </ul>
+            </li>
+            <li class="next">Go Modules
+                <ul>
+                    <li>Official Go proposal (originally called vgo)</li>
+                    <li>Preliminary support as of Go 1.11</li>
+                    <li>Default approach with Go 1.13</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Pros of Go Modules</h2>
+        <ul>
+            <li class="next">
+                Built into go command
+            </li>
+            <li class="next">
+                Simple, automatic, and performant
+            </li>
+            <li class="next">
+                Allows for reproducible builds
+            </li>
+            <li class="next">
+                Allows multiple versions of same package
+                <ul>
+                    <li>"Transitive" dependencies (dependency of dependency)</li>
+                    <li>Allows for gradual migration strategies</li>
+                </ul>
+            </li>
+            <li class="next">
+                Vendoring not required
+            </li>
+            <li class="next">
+                Your Go code can be on any path!
+            </li>
+            <li class="next">
+                Versioning based on Semver
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Cons of Go Modules</h2>
+        <ul>
+            <li class="next">
+                Downloads the Internet -- not really but can be a lot :)
+                <ul>
+                    <li>Needs to check "transitive" dependencies (dependency of dependency)</li>
+                    <li>Worse if dependency doesn't have go.mod file</li>
+                    <li>Or dependency's go.mod file is missing a dependency</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Semver</h2>
+        <ul>
+            <li class="next">
+                Version specified as "v<b>major</b>.<b>minor</b>.<b>patch</b>", e.g. "v1.0.1"
+                <ul>
+                    <li class="next">
+                        <b>major</b>: breaking change in api
+                    </li>
+                    <li class="next">
+                        <b>minor</b>: new functionality that is backwards compatible
+                    </li>
+                    <li class="next">
+                        <b>patch</b>: bug fix to existing functionality that is backwards compatible
+                    </li>
+                </ul>
+            </li>
+            <li class="next">
+                Tag your releases in git using semver
+            </li>
+            <li class="next">
+                Modules treats any v0.n.n release loosely
+            </li>
+            <li class="next">
+                Modules forces special treatment of major change 1-> 2 -> 3, etc
+                <ul>
+                    <li class="next">New version will require the version appended to the import</li>
+                    <pre>
+						<code class="next">import "rsc.io/quote/v3"</code>
+					</pre>
+                </ul>
+            </li>
+
+            <ul>
+    </section>
+
+    <section class="slide">
+        <h2>How to Use Go Modules</h2>
+        <ul>
+            <li class="next">
+                Go version at least 1.11
+            </li>
+            <li class="next">
+                Prequisites - two ways to use modules:
+                <ul>
+                    <li>
+                        Put code outside of GOPATH/src
+                    </li>
+                    <li>
+                        Set environment variable GO111MODULE=on
+                    </li>
+                </ul>
+            </li>
+            <li class="next">
+                For Go 1.13 modules will be "on" by default
+            </li>
+            <li class="next">
+                Initialize modules at beginning of project with module name:
+            </li>
+        </ul>
+        <pre>
+			<code class="next">> go mod init example.com/speak</code>
+			<code class="next">go: creating new go.mod: module example.com/hello</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Artifacts</h2>
+        <h3 class="next">go.mod</h3>
+        <pre class="next">
+			<code>module github.com/turnkey-commerce/go-modules-presentations</code>
+			<code>go 1.12</code>
+			<code>require github.com/turnkey-commerce/go-speak v1.1.0</code>		
+		</pre>
+        <h3 class="next">go.sum</h3>
+        <pre class="next">
+			<code>github.com/turnkey-commerce/go-speak v1.0.0 h1:QJkrPI6FMx+8u5qMA3I7K2eKj3No/haEq=</code>
+			<code>github.com/turnkey-commerce/go-speak v1.0.0/go.mod h1:/KX08NO2Opu5v055Cu0smeiiBox=</code>
+			<code>github.com/turnkey-commerce/go-speak v1.1.0 h1:DIUocFsueZdRRu9OfHyh1+N5CXnLlXH=</code>		
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Go Mod Demo</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Workflows Summary</h2>
+        <ul>
+            <li class="next">
+                <b>go mod init</b> creates a new module, initializing the go.mod file that describes it.
+            </li>
+            <li class="next">
+                <b>go build</b>, <b>go test</b>, and other package-building commands add new dependencies to go.mod as needed.
+            </li>
+            <li class="next">
+                <b>go list -m</b> all prints the current module’s dependencies.
+            </li>
+            <li class="next">
+                <b>go get</b> changes the required version of a dependency (or adds a new dependency).
+            </li>
+            <li class="next">
+                <b>go mod tidy</b> removes unused dependencies.
+            </li>
+            <li class="next">
+                <b>go mod vendor</b> creates a vendor folder with dependencies (optional).
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Athens</h2>
+        <ul>
+            <li class="next">
+                Provides an immutable cache for Go Packages
+            </li>
+            <li class="next">
+                Integrates with Go Modules
+            </li>
+            <li class="next">
+                Can easily self-host
+            </li>
+            <li class="next">
+                Avoids "Bad Things" Mentioned Earlier
+                <ul>
+                    <li>Disappearing modules (go-bindata)</li>
+                    <li>Google Code shut down</li>
+                    <li>Malware injected by new maintainer</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Athens Demo</h2>
+    </section>
+
+    <section class="slide">
+        <h2 class="shout">Q and A</h2>
+    </section>
+
+    <section class="slide">
+        <h2>Links</h2>
+        <h3>These Slides: <a href="https://bit.ly/2QqUI0m">https://bit.ly/2QqUI0m</a></h3>
+        <h3>Original Proposal: <a href="https://blog.golang.org/versioning-proposal">https://blog.golang.org/versioning-proposal</a></h3>
         <h3>Using Go Modules: <a href="https://blog.golang.org/using-go-modules">https://blog.golang.org/using-go-modules</a></h3>
         <h3>The Athens Project: <a href="https://docs.gomods.io/">https://docs.gomods.io/</a></h3>
-	</section>
+    </section>
 
     <div class="progress"></div>
 
     <script src="shower/shower.min.js"></script>
-    <!-- Copyright © 3000 Yours Truly, Famous Inc. -->
 
 </body>
+
 </html>

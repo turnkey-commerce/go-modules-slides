@@ -6,8 +6,8 @@
 
 code {
     font-size: 14pt;
-    line-height: 10px;
-    margin: 10px;
+    line-height: 5px;
+    margin: 5px;
 }
 
 h2 {
@@ -22,13 +22,13 @@ h3 {
 
 ul li {
     margin-left: 1em;
-    line-height: 30px;
+    line-height: 35px;
     padding-bottom: 0px;
 }
 
 ol li {
     margin-left: 1em;
-    line-height: 30px;
+    line-height: 35px;
     padding-bottom: 5px;
 }
 
